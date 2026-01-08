@@ -2,10 +2,13 @@ package com.example.demo;
 
 
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
+@RequestMapping("/api/v1")
 public class OrderController {
 
     private final OrderService orderService;
@@ -15,16 +18,16 @@ public class OrderController {
     }
 
     @PostMapping("/order")
-    public ResponseEntity<String> order(
-            @RequestParam(defaultValue = "io") String mode,
-            @RequestParam(defaultValue = "200") int delayMs
-    ) {
+    public Map<String, Object> placeOrder(@RequestBody OrderRequest request) {
+        long startTime = System.currentTimeMillis();
 
-        long start = System.currentTimeMillis();
+        String status = orderService.processOrder(request);
 
-        orderService.process(mode, delayMs);
+        long endTime = System.currentTimeMillis();
 
-        long latency = System.currentTimeMillis() - start;
-        return ResponseEntity.ok("OK (" + latency + " ms)");
+        Map<String, Object> response = new HashMap<>();
+        response.put("status", status);
+        response.put("processingTimeMs", (endTime - startTime));
+        return response;
     }
 }

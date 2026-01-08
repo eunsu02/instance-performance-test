@@ -1,15 +1,13 @@
 server:
   port: 8080
   tomcat:
-    max-threads: 50        # 인스턴스별로 동일하게 고정
-    accept-count: 20       # 초과 요청 대기열
-    connection-timeout: 2000ms
-
-spring:
-  threads:
-    virtual:
-      enabled: false       # 반드시 false (비교 실험 목적)
+    threads:
+      # 저사양 인스턴스에서 스레드 경합을 유도하기 위해 50~100 정도로 설정
+      max: 100
+    accept-count: 50
+    max-connections: 1000
 
 logging:
   level:
-    root: INFO
+    root: info
+    # 테스트 중 로그가 너무 많으면 디스크 I/O가 병목이 되므로 최소화
