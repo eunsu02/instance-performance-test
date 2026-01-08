@@ -24,10 +24,10 @@ public class OrderService {
 
     // IO-bound 시뮬레이션 (DB 대체)
     private void ioWork(int delayMs) {
-        try {
-            Thread.sleep(delayMs);
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-        }
+//        try {
+////            Thread.sleep(delayMs);
+//        } catch (InterruptedException e) {
+//            Thread.currentThread().interrupt();
+//        }
     }
 }
